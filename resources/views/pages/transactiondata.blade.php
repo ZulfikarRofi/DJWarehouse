@@ -61,21 +61,15 @@
                                     <label for="inputEmail4" class="form-label">Catatan</label>
                                     <input type="text" class="form-control" id="note" name="note" placeholder="catatan">
                                 </div>
-                                <div class="col-12">
-                                    <label for="inputEmail4" class="form-label">Tanggal</label>
-                                    <input type="date" class="form-control" id="transaction_date" name="transaction_date">
-                                </div>
                                 <div class="row mt-3">
                                     <div class="col-6">
-                                        <div class="col-12">
-                                            <label for="inputEmail4" class="form-label">Jumlah Masuk</label>
-                                            <input type="number" class="form-control" id="total_in" name="total_in" placeholder="Jumlah barang masuk">
-                                        </div>
+                                        <label for="inputEmail4" class="form-label">Tanggal</label>
+                                        <input type="date" class="form-control" id="transaction_date" name="transaction_date">
                                     </div>
                                     <div class="col-6">
                                         <div class="col-12">
-                                            <label for="inputEmail4" class="form-label">Jumlah Keluar</label>
-                                            <input type="number" class="form-control" id="total_out" name="total_out" placeholder="jumlah barang keluar">
+                                            <label for="inputEmail4" class="form-label">Kuantitas</label>
+                                            <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Jumlah barang masuk">
                                         </div>
                                     </div>
                                 </div>

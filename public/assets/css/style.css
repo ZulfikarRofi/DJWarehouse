@@ -1166,6 +1166,11 @@ h6 {
   padding: 12px 15px;
 }
 
+.autopointer:hover
+{
+    cursor:pointer;
+}
+
 .contact .php-email-form button[type=submit] {
   background: #4154f1;
   border: 0;

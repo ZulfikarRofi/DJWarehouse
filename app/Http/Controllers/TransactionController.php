@@ -48,20 +48,26 @@ class TransactionController extends Controller
             'note' => 'required',
             'type' => 'required',
             'transaction_date' => 'required',
-            'total_in' => 'required',
-            'total_out' => 'required',
+            'quantity' => 'required',
         ]);
 
+        $bahanAwalID = DB::table('transaction')->orderBy('id', 'desc')->first()->id;
+        $bahanID = $bahanAwalID + 1;
         $trans = new Transaction();
         $trans->product_id = $request->product_id;
         $trans->note = $request->note;
         $trans->type = $request->type;
+        if ($trans->type == 'buy') {
+            $typeNumber = 'BL';
+        } elseif ($trans->type == 'sell') {
+            $typeNumber = 'SL';
+        }
         $trans->transaction_date = $request->transaction_date;
-        $trans->total_in = $request->total_in;
-        $trans->total_out = $request->total_out;
-        $trans->transaction_id = $trans->product_id . Carbon::parse($trans->transaction_date)->format('Ymd');
-        $trans->total_left = $trans['total_in'] - $trans['total_out'];
+        $trans->quantity = $request->quantity;
+        $trans->transaction_id = $typeNumber .  Carbon::parse($trans->transaction_date)->format('Ymd') . $bahanID;
         $trans->save();
+        // dd($bahanID);
+        // dd($trans);
 
         return redirect('/transactions')->with('success', 'Transaksi Baru Telah Ditambahkan');
     }

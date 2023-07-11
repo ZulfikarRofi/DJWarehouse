@@ -14,11 +14,11 @@ class Transaction extends Model
     {
         parent::boot();
 
-        static::created(function ($transaction) {
-            $product = $transaction->product;
-            $product->stock -= $transaction->total_out;
-            $product->stock += $transaction->total_in;
-            $product->save();
-        });
+        // static::created(function ($transaction) {
+        //     $product = $transaction->product;
+        //     $product->stock -= $transaction->total_out;
+        //     $product->stock += $transaction->total_in;
+        //     $product->save();
+        // });
     }
 }

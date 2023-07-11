@@ -12,12 +12,16 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $bahan = DB::table('product')
-            ->join('transaction', 'product.id', '=', 'transaction.product_id')
-            ->groupBy('transaction.product_id')
+        $bahan = DB::table('transaction')
+            ->join('product', 'transaction.product_id', '=', 'product.id')
             ->get();
 
+        // dd($bahan);
+
         $result = new Collection();
+
+        $product = Product::all();
+
         foreach ($bahan as $b) {
             $a = DB::table('transaction')->where('product_id', $b->product_id)->get();
             $buy = 0;
@@ -30,25 +34,26 @@ class ProductController extends Controller
                 }
             }
             $final = $buy - $sell;
-            $result->push([
-                'id' => $b->id,
-                'name' => $b->name,
-                'image' => $b->image,
-                'stock' => $final,
-                'product_number' => $b->product_number,
-                'product_type' => $b->product_type,
-                'type' => $b->type,
-                'quality' => $b->type,
-                'size' => $b->size,
-                'merk' => $b->merk,
-                'colors' => $b->colors,
-                'sell_price' => $b->sell_price,
-                'buy_price' => $b->buy_price,
-            ]);
+
+            if ($result->where('name', $b->name)->count() === 0) {
+                $result->push([
+                    'id' => $b->transaction_id,
+                    'name' => $b->name,
+                    'image' => $b->image,
+                    'stock' => $final,
+                    'product_number' => $b->product_number,
+                    'product_type' => $b->product_type,
+                    'type' => $b->type,
+                    'quality' => $b->type,
+                    'size' => $b->size,
+                    'merk' => $b->merk,
+                    'colors' => $b->colors,
+                    'sell_price' => $b->sell_price,
+                    'buy_price' => $b->buy_price,
+                ]);
+            }
         }
-        // dd($result);
-        $product = Product::all();
-        // dd($product);
+
         return view('pages.productdata', compact('result', 'product'));
     }
 
@@ -72,6 +77,7 @@ class ProductController extends Controller
 
         $product = new Product();
         $product->name = $request->name;
+        $product->product_number = 00 . Carbon::parse(Carbon::now());
         $product->product_type = $request->product_type;
         $product->quality = $request->quality;
         $product->size = $request->size;

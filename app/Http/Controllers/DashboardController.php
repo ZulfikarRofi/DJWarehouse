@@ -89,9 +89,10 @@ class DashboardController extends Controller
         $bahan = DB::table('product')
             ->join('transaction', 'product.id', '=', 'transaction.product_id')
             ->whereBetween('transaction_date', [$akhir, $awal])
-            ->groupBy('transaction.product_id')
+            // ->groupBy('transaction.product_id')
             ->get();
 
+        // if ($->where('name', $b->name)->count() === 0)
 
         echo $awal . '<br>' . $akhir;
         // echo $bahan;
@@ -107,37 +108,70 @@ class DashboardController extends Controller
         foreach ($totalpenjualanPP as $tpp) {
             $totalpenjualanSP += $tpp->totalpp;
         }
-        // $totalpenjualanSP = whereBetween('transaction_date', [$awal, $akhir]);
-        // dd($totalpenjualanSP);
-        // dd($bahan);
 
-
+        $precentage = array();
         foreach ($totalpenjualanPP as $b) {
             $precentage[$b->product_id] = $b->totalpp / $totalpenjualanSP * 100;
         }
-        echo $precentage[2];
 
+        arsort($precentage);
 
         $Kl = new Collection();
         $kumulatif = 0;
-        foreach ($bahan as $b) {
-            $kumulatif += $precentage[$b->product_id];
-            $Kl->push([
-                'name' => $b->name,
-                'precentage' => $precentage[$b->product_id],
-                'kumulatif' => $kumulatif,
+        $bahanTpp = $totalpenjualanPP->sortByDesc('totalpp');
+        foreach ($bahanTpp as $b) {
+            if ($Kl->where('product_id', $b->product_id)->count() === 0) {
+                $kumulatif += $precentage[$b->product_id]; {
+                    $Kl->push([
+                        'product_id' => $b->product_id,
+                        'precentage' => $precentage[$b->product_id],
+                        'kumulatif' => $kumulatif,
+                    ]);
+                }
+            }
+        }
+
+        $Kl2 = new Collection();
+        foreach ($Kl as $newKl) {
+            if ($newKl['kumulatif'] <= 75) {
+                $Kl2->push([
+                    'product_id' => $newKl['product_id'],
+                    'precentage' => $newKl['precentage'],
+                    'kumulatif' => $newKl['kumulatif'],
+                    'class' => 'A',
+                ]);
+            } else if ($newKl['kumulatif'] <= 95) {
+                $Kl2->push([
+                    'product_id' => $newKl['product_id'],
+                    'precentage' => $newKl['precentage'],
+                    'kumulatif' => $newKl['kumulatif'],
+                    'class' => 'B',
+                ]);
+            } else {
+                $Kl2->push([
+                    'product_id' => $newKl['product_id'],
+                    'precentage' => $newKl['precentage'],
+                    'kumulatif' => $newKl['kumulatif'],
+                    'class' => 'C',
+                ]);
+            }
+        }
+
+        // dd($bahan);
+
+        $finalKl = new Collection();
+
+        foreach ($Kl2 as $newKl2) {
+            $stampBahan = DB::table('product')->select('name')->where('id', $newKl2['product_id'])->get();
+            $finalKl->push([
+                'name' => $stampBahan[0],
+                'product_id' => $newKl2['product_id'],
+                'precentage' => $newKl2['precentage'],
+                'kumulatif' => $newKl2['kumulatif'],
+                'class' => $newKl2['class'],
             ]);
         }
 
-
-        $sortedKl = $Kl->sortByDesc('precentage')->values();
-        // $sortedKl->dump();
-        dd($sortedKl);
-
-
-        $n = 0;
-        foreach ($sortedKl as $sK) {
-            //
-        }
+        dd($finalKl);
     }
 }

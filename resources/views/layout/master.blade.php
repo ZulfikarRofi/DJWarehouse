@@ -86,30 +86,13 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                                <i class="bi bi-gear"></i>
-                                <span>Account Settings</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                                <i class="bi bi-question-circle"></i>
-                                <span>Need Help?</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <i class="bi bi-box-arrow-right"></i>
-                                <span>Sign Out</span>
-                            </a>
+                            <form action="/logout" method="post">
+                                @csrf
+                                <button class="dropdown-item d-flex align-items-center">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    <span>Sign Out</span>
+                                </button>
+                            </form>
                         </li>
 
                     </ul><!-- End Profile Dropdown Items -->
@@ -135,7 +118,7 @@
             <li class="nav-heading">Halaman</li>
 
             <li class="nav-item">
-                <a class="nav-link " href="/userdata">
+                <a class="nav-link collapsed " href="/users">
                     <i class="bi bi-people"></i>
                     <span>Manajemen Akun</span>
                 </a>
@@ -143,33 +126,43 @@
             <!-- User Manaegement Page Nav -->
 
             <li class="nav-item">
-                <a class="nav-link " href="/products">
+                <a class="nav-link collapsed " href="/products">
                     <i class="bi bi-box-seam"></i>
                     <span>Manajemen Produk</span>
                 </a>
             </li>
             <!-- Product Management Page Nav -->
             <li class="nav-item">
-                <a class="nav-link " href="/transactions">
+                <a class="nav-link collapsed " href="/transactions">
                     <i class="bi bi-arrow-left-right"></i>
                     <span>Data Transaksi</span>
                 </a>
             </li>
             <!-- Transaction Management Page Nav -->
             <li class="nav-item">
-                <a class="nav-link" href="/warehouses">
+                <a class="nav-link collapsed" href="/warehouses">
                     <i class="bi bi-building"></i>
                     <span>Gudang</span>
                 </a>
             </li>
             <!-- Product Management Page Nav -->
             <li class="nav-item">
-                <a class="nav-link" href="/reports">
-                    <i class="bi bi-clipboard"></i>
-                    <span>Laporan</span>
+                <a class="nav-link collapsed" data-bs-target="#report-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-clipboard"></i><span>Laporan</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
-            </li>
-            <!-- Product Management Page Nav -->
+                <ul id="report-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="/sellreport">
+                            <i class="bi bi-circle"></i><span>Laporan Penjualan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/stockreport">
+                            <i class="bi bi-circle"></i><span>Laporan Persediaan Barang</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Icons Nav -->
         </ul>
 
     </aside>
