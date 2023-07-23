@@ -15,7 +15,7 @@
     @endif
     <div class="card-header">
         <div class="d-flex justify-content-between mb-3">
-            <h5 class="card-title">Product Page | Halaman Tabel Produk Toko UD. Dewa Jaya</h5>
+            <h5 class="card-title">Halaman Transaksi | Daftar Transaksi Produk</h5>
             <div class="d-flex justify-content-end">
                 <div class="search-bar mt-3 px-2">
                     <form class="search-form d-flex align-items-center" method="POST" action="#">
@@ -89,7 +89,7 @@
             <tr>
                 <th scope="col" style="width:5%;">#</th>
                 <th scope="col" style="width:20%;">Nama Produk</th>
-                <th scope="col" style="width:10%;">ID Produk</th>
+                <th scope="col" style="width:10%;">Nomor Produk</th>
                 <th scope="col" style="width:15%;">ID Transaksi</th>
                 <th scope="col" style="width:10%;">Tipe Transaksi</th>
                 <th scope="col" style="width:10%;">Kuantitas</th>
@@ -104,7 +104,7 @@
                 <td>{{$i++}}</td>
                 <td>{{$value->name}} {{$value->colors}}</td>
                 <td>
-                    {{$value->id}}
+                    {{$value->product_number}}
                     <!-- {{$value->product_id}} -->
                 </td>
                 <td>{{$value->transaction_id}}</td>

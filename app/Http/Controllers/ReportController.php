@@ -29,17 +29,24 @@ class ReportController extends Controller
     public function getSellReport()
     {
         $totalPP = DB::table('product')
-            ->selectRaw('product_id, name, product_number, product_id ,sell_price,sum(sell_price * quantity) as totalpp, sum(quantity) as total_jual')
+            ->selectRaw('product_id, name, product_number, colors,product_id ,sell_price,sum(sell_price * quantity) as totalpp, sum(quantity) as total_jual')
             ->join('transaction', 'product_id', '=', 'product.id')
             ->where('type', 'sell')
-            ->groupBy('name', 'product_number', 'product_id', 'sell_price', 'transaction.product_id')
+            ->groupBy('name', 'product_number', 'colors', 'product_id', 'sell_price', 'transaction.product_id')
+            ->get();
+
+        $totalbelipp = DB::table('product')
+            ->selectRaw('product_id, name, product_number, colors, product_id,buy_price,sum(buy_price * quantity) as totalpp, sum(quantity) as total_beli')
+            ->join('transaction', 'product_id', '=', 'product.id')
+            ->where('type', 'buy')
+            ->groupBy('name', 'product_number', 'colors', 'product_id', 'buy_price', 'transaction.product_id')
             ->get();
 
         $bahan = DB::table('transaction')
             ->join('product', 'transaction.product_id', '=', 'product.id')
             ->get();
 
-        // dd($totalPP);
+        // dd($totalbelipp);
 
         return view('pages.sellreport', compact('totalPP', 'bahan'));
     }
@@ -74,12 +81,61 @@ class ReportController extends Controller
                     'image' => $b->image,
                     'stock' => $final,
                     'total_sell' => $sell,
+                    'total_buy' => $buy,
                     'product_number' => $b->product_number,
                 ]);
             }
         }
-
+        // dd($result);
         return view('pages.stockreport', compact('result'));
+    }
+
+    public function getLogsReport()
+    {
+        // $logs = DB::table('afterlns_product')->join('product', 'afterlns_product.product_id', '=', 'product.id')->join('rack', 'afterlns_product.rack_id', '=', 'rack.id')->get();
+
+        $log = DB::table('afterlns_product')->get();
+        $reportLog = new Collection();
+        foreach ($log as $logg) {
+            $products = DB::table('product')->where('id', $logg->product_id)->first();
+            $racks = DB::table('rack')->where('id', $logg->rack_id)->first();
+            $nracks = DB::table('rack')->where('id', $logg->new_rack_id)->first();
+
+            if (empty($logg->rack_id)) {
+                if (empty($logg->new_rack_id)) {
+                    $reportLog->push([
+                        'product_name' => $products->name,
+                        'product_number' => $products->product_number,
+                        'product_color' => $products->colors,
+                        'old_rack' => 'null',
+                        'new_rack' => 'null',
+                        'change_on' => $logg->change_on,
+                    ]);
+                } else {
+                    $reportLog->push([
+                        'product_name' => $products->name,
+                        'product_number' => $products->product_number,
+                        'product_color' => $products->colors,
+                        'old_rack' => 'null',
+                        'new_rack' => $nracks->name,
+                        'change_on' => $logg->change_on,
+                    ]);
+                }
+            }
+            else {
+                $reportLog->push([
+                    'product_name' => $products->name,
+                    'product_number' => $products->product_number,
+                    'product_color' => $products->colors,
+                    'old_rack' => $racks->name,
+                    'new_rack' => $logg->new_rack_id,
+                    'change_on' => $logg->change_on,
+                ]);
+            }
+        }
+        // dd($reportLog);
+
+        return view('pages.placementlogsreport')->with('reportLog', $reportLog);
     }
 
     /**

@@ -18,7 +18,21 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('pages.dashboard');
+        $sales = DB::table('transaction')->where('type','sell')->count();
+        // dd($sales);
+        $revenue = DB::table('product')
+            ->selectRaw("product_id, name, product_number, sum(sell_price * quantity) as totalpp")
+            ->join('transaction', 'product.id', '=', 'transaction.product_id')
+            ->groupBy('transaction.product_id', 'name', 'product_number')
+            ->get();
+
+        $totalpenjualanSP = 0;
+        foreach ($revenue as $tpp) {
+            $totalpenjualanSP += $tpp->totalpp;
+        }
+        $product = DB::table('product')->count();
+        // dd($product);
+        return view('pages.dashboard', compact('sales', 'totalpenjualanSP', 'product'));
     }
 
     /**

@@ -4,8 +4,7 @@
 
 <div class="card px-2">
     <div class="card-header">
-        <div class="d-flex justify-content-between mb-3">
-            <h5 class="card-title">Halaman Laporan | Laporan Stok Produk Toko UD. Dewa Jaya</h5>
+        <div class="row mb-3">
             <!-- Display error message -->
             @if ($errors->any())
             <div class="alert alert-danger">
@@ -23,6 +22,9 @@
                 {{ session('success') }}
             </div>
             @endif
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+            <h5 class="card-title">Manajemen Pengguna | Data Pengguna</h5>
             <div class="py-3">
                 <button class="btn btn-outline-primary fw-semibold" data-bs-toggle="modal" data-bs-target="#verticalycentered"><i class="bi bi-person-plus"></i> Tambah Pengguna</button>
             </div>

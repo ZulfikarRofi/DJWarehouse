@@ -9,4 +9,9 @@ class Rack extends Model
 {
     use HasFactory;
     protected $table = 'rack';
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
 }

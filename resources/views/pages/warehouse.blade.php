@@ -6,17 +6,6 @@
     <div class="card-header">
         <div class="d-flex justify-content-between mb-3">
             <h5 class="card-title">Menu Gudang | Halaman Tabel Produk Pada Gudang Toko UD. Dewa Jaya</h5>
-            <div class="d-flex justify-content-end align-items-center">
-                <div class="filter">
-                    <a class="icon fs-3" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                        <li class="dropdown-header text-start">
-                            <h6>Menu Gudang</h6>
-                        </li>
-                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#klasifikasiProduk">Klasifikasi Produk</a></li>
-                    </ul>
-                </div>
-            </div>
         </div>
         <div class="new-data d-flex justify-content-end px-2 mb-3">
             <img src="/assets/img/plus.png" alt="new data" style="width:3%" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -146,7 +135,7 @@
         </div>
     </div>
     <!-- Product Classification Modal-->
-    <!-- Tambah Rak Produk Modal -->
+    <!-- Tambah Gudang Modal -->
     <div class="modal fade" id="modaltambahgudang" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -197,7 +186,7 @@
             </div>
         </div>
     </div><!-- End Vertically centered Modal-->
-    <!-- Tambah Rak Produk Modal -->
+    <!-- Tambah Lokasi Modal -->
     <div class="modal fade" id="modaltambahlokasi" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

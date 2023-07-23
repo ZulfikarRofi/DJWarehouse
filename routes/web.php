@@ -36,11 +36,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/products', [ProductController::class, 'index']);
     Route::get('/transactions', [TransactionController::class, 'index']);
     Route::get('/reports', [ReportController::class, 'index']);
-    Route::get('/warehouses', [WarehouseController::class, 'index']);
+    Route::get('/racks/{id}', [WarehouseController::class, 'getRacks']);
+    Route::get('/selected-rack/{id}', [WarehouseController::class, 'getSelectedRack']);
+    Route::get('/warehouse', [WarehouseController::class, 'index']);
     Route::get('/classification', [WarehouseController::class, 'classification']);
     Route::get('/sellreport', [ReportController::class, 'getSellReport']);
     Route::get('/stockreport', [ReportController::class, 'getStockReport']);
-
+    Route::get('/productslog', [ReportController::class, 'getLogsReport']);
+    Route::get('/warehouses', [WarehouseController::class, 'getWarehouse']);
 
     // Route Post Function
     Route::post('/register', [UsersController::class, 'RegisterUser']);
@@ -55,9 +58,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/classification', [WarehouseController::class, 'classification']);
 
 
+    //Route Patch Function
+    Route::patch('/addProducttoRack/{id}', [WarehouseController::class, 'addProducttoRack']);
+
     // Route Delete Function
     Route::delete('/deleteproduct/{id}', [ProductController::class, 'destroy']);
     Route::delete('/deletetransaction/{id}', [TransactionController::class, 'destroy']);
+    Route::delete('/deletelocation/{id}', [WarehouseController::class, 'destroyLc']);
+    Route::delete('/deletewarehouse/{id}', [WarehouseController::class, 'destroyWh']);
 
 
     //testing route

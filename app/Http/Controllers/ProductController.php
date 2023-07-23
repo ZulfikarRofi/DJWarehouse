@@ -77,7 +77,8 @@ class ProductController extends Controller
 
         $product = new Product();
         $product->name = $request->name;
-        $product->product_number = 00 . Carbon::parse(Carbon::now());
+        $bahanAwalID = DB::table('product')->orderBy('id', 'desc')->first()->id;
+        $product->product_number = 'KR_' . Carbon::parse(Carbon::now())->format('Ymd') . $bahanAwalID + 1;
         $product->product_type = $request->product_type;
         $product->quality = $request->quality;
         $product->size = $request->size;

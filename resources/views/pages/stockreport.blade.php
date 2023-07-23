@@ -7,7 +7,7 @@
     <div class="card p-3">
         <div class="card-header">
             <div class="d-flex justify-content-between mb-3">
-                <h5 class="card-title">Halaman Laporan | Laporan Stok Produk Toko UD. Dewa Jaya</h5>
+                <h5 class="card-title">Halaman Laporan | Laporan Stok Produk Toko</h5>
                 <div class="filter">
                     <a class="icon fs-3" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -44,7 +44,7 @@
                                 <td class="text-center">{{$rs['name']}}</td>
                                 <td class="table-active text-center">{{$rs['product_number']}}</td>
                                 <td class="text-center">{{$rs['stock']}} pcs</td>
-                                <td class="text-center">{{$rs['total_sell']}} pcs</td>
+                                <td class="text-center">{{$rs['total_buy']}} pcs</td>
                                 <td class="text-center">{{$rs['total_sell']}} pcs</td>
                                 <td class="text-center">{{$rs['stock']}} pcs</td>
                             </tr>

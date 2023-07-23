@@ -62,14 +62,14 @@
                 <li class="nav-item dropdown pe-3">
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                        <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                        <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+                        <img src="/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                        <span class="d-none d-md-block dropdown-toggle ps-2 text-capitalize">{{auth()->user()->name}}</span>
                     </a><!-- End Profile Iamge Icon -->
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
-                            <h6>Kevin Anderson</h6>
-                            <span>Web Designer</span>
+                            <h6 class="text-capitalize">{{auth()->user()->name}}</h6>
+                            <span class="text-capitalize">{{auth()->user()->level}}</span>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -110,27 +110,84 @@
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/">
-                    <i class="bi bi-grid"></i>
+                    <i class="bi bi-house"></i>
                     <span>Utama</span>
                 </a>
             </li><!-- End Dashboard Nav -->
 
             <li class="nav-heading">Halaman</li>
-
+            @if(auth()->user()->level == 'admin')
             <li class="nav-item">
                 <a class="nav-link collapsed " href="/users">
                     <i class="bi bi-people"></i>
                     <span>Manajemen Akun</span>
                 </a>
             </li>
-            <!-- User Manaegement Page Nav -->
-
             <li class="nav-item">
                 <a class="nav-link collapsed " href="/products">
                     <i class="bi bi-box-seam"></i>
                     <span>Manajemen Produk</span>
                 </a>
             </li>
+            <!-- Product Management Page Nav -->
+            <li class="nav-item">
+                <a class="nav-link collapsed " data-bs-toggle="modal" data-bs-target="#klasifikasiProduk">
+                    <i class="bi bi-grid"></i>
+                    <span>Klasifikasi Produk</span>
+                </a>
+            </li>
+            <!-- Product Classification Page Nav -->
+            <li class="nav-item">
+                <a class="nav-link collapsed " href="/transactions">
+                    <i class="bi bi-arrow-left-right"></i>
+                    <span>Data Transaksi</span>
+                </a>
+            </li>
+            <!-- Transaction Management Page Nav -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/warehouses">
+                    <i class="bi bi-building"></i>
+                    <span>Gudang</span>
+                </a>
+            </li>
+            <!-- Product Management Page Nav -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#report-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-clipboard"></i><span>Laporan</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="report-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="/sellreport">
+                            <i class="bi bi-circle"></i><span>Laporan Penjualan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/stockreport">
+                            <i class="bi bi-circle"></i><span>Laporan Persediaan Barang</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/productslog">
+                            <i class="bi bi-circle"></i><span>Log Perpindahan Barang</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Icons Nav -->
+            <!-- User Manaegement Page Nav -->
+            @elseif(auth()->user()->level == 'admin toko')
+            <li class="nav-item">
+                <a class="nav-link collapsed " href="/products">
+                    <i class="bi bi-box-seam"></i>
+                    <span>Manajemen Produk</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed " data-bs-toggle="modal" data-bs-target="#klasifikasiProduk">
+                    <i class="bi bi-grid"></i>
+                    <span>Klasifikasi Produk</span>
+                </a>
+            </li>
+            <!-- Product Classification Page Nav -->
             <!-- Product Management Page Nav -->
             <li class="nav-item">
                 <a class="nav-link collapsed " href="/transactions">
@@ -163,6 +220,58 @@
                     </li>
                 </ul>
             </li><!-- End Icons Nav -->
+            @elseif(auth()->user()->level == 'admin gudang')
+            <li class="nav-item">
+                <a class="nav-link collapsed " data-bs-toggle="modal" data-bs-target="#klasifikasiProduk">
+                    <i class="bi bi-grid"></i>
+                    <span>Klasifikasi Produk</span>
+                </a>
+            </li>
+            <!-- Product Classification Page Nav -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/warehouses">
+                    <i class="bi bi-building"></i>
+                    <span>Gudang</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#report-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-clipboard"></i><span>Laporan</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="report-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="/stockreport">
+                            <i class="bi bi-circle"></i><span>Laporan Persediaan Barang</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Icons Nav -->
+            @else
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/warehouses">
+                    <i class="bi bi-building"></i>
+                    <span>Gudang</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#report-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-clipboard"></i><span>Laporan</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="report-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="/sellreport">
+                            <i class="bi bi-circle"></i><span>Laporan Penjualan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/stockreport">
+                            <i class="bi bi-circle"></i><span>Laporan Persediaan Barang</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Icons Nav -->
+            @endif
+
         </ul>
 
     </aside>
@@ -182,6 +291,50 @@
         </div><!-- End Page Title -->
 
         <section class="section" style="margin: 0px;">
+            <!-- Product Classification Modal -->
+            <div class="modal fade" id="klasifikasiProduk" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Formulir Klasifikasi Produk</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-9">
+                                    <form action="/classification" method="post">
+                                        @csrf
+                                        <select class="form-select" aria-label="Default select example" name="duration">
+                                            <option selected>Pilih Durasi Klasifikasi</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>
+                                </div>
+                                <div class="col-3 py-2">
+                                    <span class="fw-semibold text-black">Bulan</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <!-- Product Classification Modal-->
             @yield('content')
         </section>
 
@@ -190,7 +343,7 @@
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
         <div class="copyright">
-            &copy; Copyright <strong><span>SIMFORECAST RSIA SOERYA</span></strong>. All Rights Reserved
+            &copy; Copyright <strong><span>Sistem Informasi Pergudangan UD. Dewa Jaya</span></strong>. All Rights Reserved
         </div>
         <div class="credits">
 

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Pages / Login - NiceAdmin Bootstrap Template</title>
+    <title>Halaman Login Sistem Informasi Pergudangan</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -47,11 +47,14 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
-                            <div class="d-flex justify-content-center py-4">
-                                <a href="index.html" class="logo d-flex align-items-center w-auto">
-                                    <span class="d-none d-lg-block">Login to SIMFORECAST <br> <span class="fs-5">by RSIA SOERYA</span></span>
-                                </a>
-                            </div><!-- End Logo -->
+                            <!-- <div class="d-flex justify-content-center py-4">
+                                <a href="index.html" class="logo d-flex align-items-center w-auto"> -->
+                            <div class="mb-3">
+                                <p class="fw-bolder fs-3 text-center">Login Warehouse Management System</p>
+                                <p class="passive-text fw-semibold text-secondary text-center">by Dewa Jaya Ceramics</p>
+                            </div>
+                            <!-- </a> -->
+                            <!-- </div>End Logo -->
 
                             <div class="card mb-3">
                                 <div class="card-header">
@@ -68,8 +71,8 @@
                                 <div class="card-body">
 
                                     <div class="pt-4 pb-2">
-                                        <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
-                                        <p class="text-center small">Enter your username & password to login</p>
+                                        <h5 class="card-title text-center pb-0 fs-4">Halaman Login</h5>
+                                        <p class="text-center small">Masukkan Email dan Password Untuk Masuk Ke Dalam Sistem</p>
                                     </div>
 
                                     <form class="row g-3 needs-validation" action="/login" method="post">
@@ -82,23 +85,23 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-12">
+                                        <div class="col-12 mb-3">
                                             <label for="yourPassword" class="form-label">Password</label>
                                             <input type="password" name="password" class="form-control" id="password" required>
                                             <div class="invalid-feedback">Please enter your password!</div>
                                         </div>
-
+                                        <!--
                                         <div class="col-12">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
                                                 <label class="form-check-label" for="rememberMe">Remember me</label>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="col-12">
                                             <button class="btn btn-primary w-100" type="submit">Login</button>
                                         </div>
                                         <div class="col-12">
-                                            <p class="small mb-0">Don't have account? <a href="pages-register.html">Please email admin here !</a></p>
+                                            <p class="small mb-0 text-center">Kedala Masuk ? Silahkan Hubungi <a href="wa.me/085967173382">Admin</a></p>
                                         </div>
                                     </form>
 
@@ -110,7 +113,7 @@
                                 <!-- You can delete the links only if you purchased the pro version. -->
                                 <!-- Licensing information: https://bootstrapmade.com/license/ -->
                                 <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-                                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                                <!-- Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> -->
                             </div>
 
                         </div>

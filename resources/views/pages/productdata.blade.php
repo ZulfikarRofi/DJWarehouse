@@ -5,7 +5,7 @@
 <div class="card">
     <div class="card-header">
         <div class="d-flex justify-content-between mb-3">
-            <h5 class="card-title">Product Page | Halaman Tabel Produk Toko UD. Dewa Jaya</h5>
+            <h5 class="card-title">Halaman Produk | Halaman Tabel Produk</h5>
             <div class="d-flex justify-content-end">
                 <div class="search-bar mt-3 px-2">
                     <form class="search-form d-flex align-items-center" method="POST" action="#">

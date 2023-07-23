@@ -105,7 +105,6 @@ class WarehouseController extends Controller
         $request->validate(
             [
                 'warehouse_name' => 'required|min:3',
-                'registered_date' => 'required',
             ]
         );
 
@@ -113,13 +112,21 @@ class WarehouseController extends Controller
         $wh->warehouse_name = $request->warehouse_name;
         $whid = DB::table('warehouse')->orderByDesc('created_at')->orderByDesc('updated_at')->pluck('id')->first();
         $whid2 = $whid + 1;
-        $wh->registered_date = $request->registered_date;
-        $wh->warehouse_id = 'GD' . '_' . 0 . $whid2 . '_' . Carbon::parse($wh->registered_date)->format('Ymd');
+        $wh->registered_date = Carbon::now();
+        $wh->warehouse_id = 'GD' . str_pad($whid2, 3, '0', STR_PAD_LEFT);
         $wh->status = 'other';
         $wh->save();
         // dd($wh);
 
         return redirect('/warehouses')->with('success', 'Gudang Baru Berhasil diTambahkan');
+    }
+
+    public function destroyWh($id)
+    {
+        $wh = Warehouse::find($id);
+        $wh->delete();
+
+        return redirect('/warehouses')->with('success', 'Data Gudang Berhasil Dihapus');
     }
 
     public function locationStore(Request $request)
@@ -135,7 +142,15 @@ class WarehouseController extends Controller
         $lc->save();
         // dd($lc);
 
-        return redirect('/warehouses')->with('success', 'Lokasi Baru Berhasil Ditambahkan');
+        return redirect()->back()->with('success', 'Lokasi Baru Berhasil Ditambahkan');
+    }
+
+    public function destroyLc($id)
+    {
+        $lc = Location::find($id);
+        $lc->delete();
+
+        return redirect()->back()->with('success', 'Data Lokasi Berhasil Dihapus');
     }
 
     public function addCategory(Request $request)
@@ -156,23 +171,46 @@ class WarehouseController extends Controller
 
         return redirect()->back();
     }
+
+    public function getRacks($id)
+    {
+        $lc = DB::table('location')
+            ->where('warehouse_id', $id)
+            ->get();
+
+
+        $ct = Category::all();
+        $wh = Warehouse::find($id);
+        $rk = Rack::all()->groupBy('location_id');
+
+        $groupedRack = [];
+
+        foreach ($rk as $r => $innerArray) {
+            $groupedRack[$r] = $innerArray;
+        }
+
+        $groupedSpecRack = [];
+        foreach ($groupedRack as $gr => $innerArray2) {
+            $groupedSpecRack[$gr] = $innerArray2;
+        }
+
+
+        // dd($groupedRack);
+
+        // dd($rk[8]);
+        return view('pages.masterrack', compact('lc', 'wh', 'ct', 'groupedRack', 'rk'));
+    }
+
+
     public function addRackStore(Request $request)
     {
-        // $request->validate([
-        //     // 'location_id' => 'required',
-        //     // 'name' => 'required',
-        //     // 'rack_id' => 'required',
-        //     // 'category' => 'required',
-        //     // 'registered_date' => 'required',
-        //     // 'capacity' => 'required',
-        // ]);
-
-
         $newRack = new Rack();
         $newRack->location_id = $request->location_id;
         $newRack->name = $request->name;
-        $rackNumber = str_pad($request->rack_id, 6, '0', STR_PAD_LEFT);
-        $newRack->rack_id = $rackNumber;
+        $getlastId = DB::table('rack')->where('location_id', $request->location_id)->count();
+        $prepName = strtoupper(substr($request->location_name, 0, 3));
+        $rackNumber = str_pad($getlastId + 1, 3, '0', STR_PAD_LEFT);
+        $newRack->rack_id = $prepName . '-' . $rackNumber;
         $newRack->category_id = $request->category_id;
         $newRack->registered_date = Carbon::now();
         $newRack->capacity = $request->capacity;
@@ -180,7 +218,25 @@ class WarehouseController extends Controller
 
         // dd($newRack);
 
-        return redirect('/warehouses')->with('success', 'Data Rak Baru Telah Ditambahkan');
+        return redirect()->back()->with('success', 'Data Rak Baru Telah Ditambahkan');
+    }
+
+    public function addProducttoRack(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required',
+            'rack_id' => 'required',
+        ]);
+
+        $addProduct = DB::table('product')->where('id', $request->product_id)->first();
+        if ($addProduct) {
+            DB::table('product')->where('id', $request->product_id)->update([
+                'rack_id' => $request->rack_id
+            ]);
+        }
+
+        // dd($addProduct);
+        return redirect()->back()->with('success', 'Berhasil Tambahkan Produk Pada Rak');
     }
 
     public function storeAddPlacement(Request $request)
@@ -204,6 +260,15 @@ class WarehouseController extends Controller
         return redirect()->back();
     }
 
+    public function getSelectedRack($id)
+    {
+        $rack = Rack::find($id);
+        $product = DB::table('product')->where('rack_id', $id)->get();
+        $products = Product::all();
+
+        return view('pages.detailrack', compact('rack', 'products', 'product'));
+    }
+
     public function classification(Request $request)
     {
         $request->validate([
@@ -225,10 +290,10 @@ class WarehouseController extends Controller
         // echo $bahan;
         //Mencari nilai total harga jual semua produk
         $totalpenjualanPP = DB::table('product')
-            ->selectRaw("product_id, name,sum(sell_price * quantity) as totalpp")
+            ->selectRaw("product_id, name, product_number, sum(sell_price * quantity) as totalpp")
             ->join('transaction', 'product.id', '=', 'transaction.product_id')
             ->whereBetween('transaction_date', [$akhir, $awal])
-            ->groupBy('transaction.product_id', 'name')
+            ->groupBy('transaction.product_id', 'name', 'product_number')
             ->get();
 
         $totalpenjualanSP = 0;
@@ -253,6 +318,9 @@ class WarehouseController extends Controller
                     $Kl->push([
                         'product_name' => $b->name,
                         'product_id' => $b->product_id,
+                        'product_number' => $b->product_number,
+                        'totalpp' => $b->totalpp,
+                        'totalsp' => $totalpenjualanSP,
                         'precentage' => $precentage[$b->product_id],
                         'kumulatif' => $kumulatif,
                     ]);
@@ -260,12 +328,16 @@ class WarehouseController extends Controller
             }
         }
 
+        // dd($Kl);
         $Kl2 = new Collection();
         foreach ($Kl as $newKl) {
             if ($newKl['kumulatif'] <= 75) {
                 $Kl2->push([
                     'product_name' => $newKl['product_name'],
                     'product_id' => $newKl['product_id'],
+                    'product_number' => $newKl['product_number'],
+                    'totalpp' => $newKl['totalpp'],
+                    'totalsp' => $newKl['totalsp'],
                     'precentage' => $newKl['precentage'],
                     'kumulatif' => $newKl['kumulatif'],
                     'class' => 'A',
@@ -274,6 +346,9 @@ class WarehouseController extends Controller
                 $Kl2->push([
                     'product_name' => $newKl['product_name'],
                     'product_id' => $newKl['product_id'],
+                    'product_number' => $newKl['product_number'],
+                    'totalpp' => $newKl['totalpp'],
+                    'totalsp' => $newKl['totalsp'],
                     'precentage' => $newKl['precentage'],
                     'kumulatif' => $newKl['kumulatif'],
                     'class' => 'B',
@@ -282,6 +357,9 @@ class WarehouseController extends Controller
                 $Kl2->push([
                     'product_name' => $newKl['product_name'],
                     'product_id' => $newKl['product_id'],
+                    'product_number' => $newKl['product_number'],
+                    'totalpp' => $newKl['totalpp'],
+                    'totalsp' => $newKl['totalsp'],
                     'precentage' => $newKl['precentage'],
                     'kumulatif' => $newKl['kumulatif'],
                     'class' => 'C',
@@ -297,6 +375,9 @@ class WarehouseController extends Controller
             $finalKl->push([
                 'product_name' => $newKl2['product_name'],
                 'product_id' => $newKl2['product_id'],
+                'product_number' => $newKl2['product_number'],
+                'totalpp' => $newKl2['totalpp'],
+                'totalsp' => $newKl2['totalsp'],
                 'precentage' => $newKl2['precentage'],
                 'kumulatif' => $newKl2['kumulatif'],
                 'class' => $newKl2['class'],
@@ -308,6 +389,13 @@ class WarehouseController extends Controller
         $formatAwal = Carbon::parse($awal)->isoFormat('Do MMMM YYYY');
         $formatAkhir = Carbon::parse($akhir)->isoFormat('Do MMMM YYYY');
         return view('pages.detailclassification', compact('formatAwal', 'formatAkhir'))->with('finalKl', $finalKl);
+    }
+
+    public function getWarehouse()
+    {
+        $wh = Warehouse::all();
+
+        return view('pages.masterwarehouse', compact('wh'));
     }
 
     /**
