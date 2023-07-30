@@ -18,4 +18,9 @@ class Product extends Model
         //
         return $this->hasMany(Transaction::class);
     }
+
+    public function product_partners()
+    {
+        return $this->belongsToMany(Partners::class, 'partners_product');
+    }
 }

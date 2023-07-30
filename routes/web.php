@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashbpoardController;
+use App\Http\Controllers\PartnersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TransactionController;
@@ -44,6 +45,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/stockreport', [ReportController::class, 'getStockReport']);
     Route::get('/productslog', [ReportController::class, 'getLogsReport']);
     Route::get('/warehouses', [WarehouseController::class, 'getWarehouse']);
+    Route::get('/partners', [PartnersController::class, 'getPartners']);
+    Route::get('/multi', [PartnersController::class, 'test']);
+    Route::get('/multip', [PartnersController::class, 'partners']);
+    Route::get('/multi-test', [PartnersController::class, 'storePartnersProduct']);
+    Route::get('/multi-test2', [PartnersController::class, 'storeProductPartners']);
+    Route::get('/productspartner/{id}', [PartnersController::class, 'getProductsPartner']);
+    Route::get('/partnersproduct/{id}', [PartnersController::class, 'getPartnersProduct']);
+    Route::get('/partnerstransaction/{id}', [PartnersController::class, 'getPartnersTransaction']);
+    Route::get('/transactionspartner/{id}', [PartnersController::class, 'getTransactionsPartner']);
+    Route::get('/stp', [PartnersController::class, 'sTP']);
+    Route::get('/spt', [PartnersController::class, 'sPT']);
 
     // Route Post Function
     Route::post('/register', [UsersController::class, 'RegisterUser']);
@@ -56,7 +68,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/createcategory', [WarehouseController::class, 'addCategory']);
     Route::post('/createplacement', [WarehouseController::class, 'storeAddPlacement']);
     Route::post('/classification', [WarehouseController::class, 'classification']);
-
+    Route::post('/storesamplepartners', [PartnersController::class, 'exStorePartners']);
 
     //Route Patch Function
     Route::patch('/addProducttoRack/{id}', [WarehouseController::class, 'addProducttoRack']);

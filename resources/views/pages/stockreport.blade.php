@@ -32,7 +32,7 @@
                                 <th scope="col" class="text-center">Stok Gudang</th>
                                 <th scope="col" class="text-center">Total Barang Masuk</th>
                                 <th scope="col" class="text-center">Total Barang Keluar</th>
-                                <th scope="col" class="text-center">Sisa Stok</th>
+                                <th scope="col" class="text-center">Kekurangan Stok</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -46,7 +46,11 @@
                                 <td class="text-center">{{$rs['stock']}} pcs</td>
                                 <td class="text-center">{{$rs['total_buy']}} pcs</td>
                                 <td class="text-center">{{$rs['total_sell']}} pcs</td>
-                                <td class="text-center">{{$rs['stock']}} pcs</td>
+                                @if($rs['needed'] !== 0)
+                                <td class="text-center bg-warning">{{$rs['needed']}} pcs</td>
+                                @else
+                                <td class="text-center">{{$rs['needed']}} pcs</td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>

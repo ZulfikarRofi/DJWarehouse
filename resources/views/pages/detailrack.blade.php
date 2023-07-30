@@ -3,6 +3,16 @@
 @section('content')
 
 <div class="card px-2">
+    @if (session('success'))
+    <div class="alert alert-success" role="alert">
+        {{ session('success') }}
+    </div>
+    @endif
+    @if(session('delete'))
+    <div class="alert alert-warning" role="alert">
+        {{ session('delete') }}
+    </div>
+    @endif
     <div class="card-header">
         <div class="d-flex justify-content-between mb-3">
             <h5 class="card-title">{{$rack->name}} ({{$rack->rack_id}})</span> | Daftar Produk</h5>

@@ -21,4 +21,9 @@ class Transaction extends Model
         //     $product->save();
         // });
     }
+
+    public function partners()
+    {
+        return $this->belongsToMany('App\Models\Partners');
+    }
 }

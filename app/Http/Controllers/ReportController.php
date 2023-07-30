@@ -75,15 +75,32 @@ class ReportController extends Controller
             $final = $buy - $sell;
 
             if ($result->where('name', $b->name)->count() === 0) {
-                $result->push([
-                    'id' => $b->transaction_id,
-                    'name' => $b->name,
-                    'image' => $b->image,
-                    'stock' => $final,
-                    'total_sell' => $sell,
-                    'total_buy' => $buy,
-                    'product_number' => $b->product_number,
-                ]);
+                if($final < 0)
+                {
+                    $needed = $final * -1;
+                    $result->push([
+                        'id' => $b->transaction_id,
+                        'name' => $b->name,
+                        'image' => $b->image,
+                        'needed' => $needed,
+                        'stock' => 0,
+                        'total_sell' => $sell,
+                        'total_buy' => $buy,
+                        'product_number' => $b->product_number,
+                    ]);
+                } else
+                {
+                    $result->push([
+                        'id' => $b->transaction_id,
+                        'name' => $b->name,
+                        'image' => $b->image,
+                        'needed' => 0,
+                        'stock' => $final,
+                        'total_sell' => $sell,
+                        'total_buy' => $buy,
+                        'product_number' => $b->product_number,
+                    ]);
+                }
             }
         }
         // dd($result);
@@ -121,8 +138,7 @@ class ReportController extends Controller
                         'change_on' => $logg->change_on,
                     ]);
                 }
-            }
-            else {
+            } else {
                 $reportLog->push([
                     'product_name' => $products->name,
                     'product_number' => $products->product_number,

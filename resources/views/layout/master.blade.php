@@ -150,6 +150,12 @@
                     <span>Gudang</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/partners">
+                    <i class="bi bi-person-square"></i>
+                    <span>Supplier</span>
+                </a>
+            </li>
             <!-- Product Management Page Nav -->
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#report-nav" data-bs-toggle="collapse" href="#">
@@ -244,6 +250,11 @@
                             <i class="bi bi-circle"></i><span>Laporan Persediaan Barang</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="/productslog">
+                            <i class="bi bi-circle"></i><span>Log Perpindahan Barang</span>
+                        </a>
+                    </li>
                 </ul>
             </li><!-- End Icons Nav -->
             @else
@@ -266,6 +277,11 @@
                     <li>
                         <a href="/stockreport">
                             <i class="bi bi-circle"></i><span>Laporan Persediaan Barang</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/productslog">
+                            <i class="bi bi-circle"></i><span>Log Perpindahan Barang</span>
                         </a>
                     </li>
                 </ul>

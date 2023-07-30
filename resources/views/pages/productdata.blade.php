@@ -3,6 +3,16 @@
 @section('content')
 
 <div class="card">
+    @if (session('success'))
+    <div class="alert alert-success" role="alert">
+        {{ session('success') }}
+    </div>
+    @endif
+    @if(session('delete'))
+    <div class="alert alert-warning" role="alert">
+        {{ session('delete') }}
+    </div>
+    @endif
     <div class="card-header">
         <div class="d-flex justify-content-between mb-3">
             <h5 class="card-title">Halaman Produk | Halaman Tabel Produk</h5>
@@ -137,8 +147,7 @@
                         <td class="text-center"> Rp. {{number_format($value['sell_price'], 0 , ',' , '.')}},-</td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <img src="/assets/img/edit.png" alt="edit" style="width:25%">
-                                <img class="ms-2" src="/assets/img/delete.png" alt="edit" style="width:25%" data-bs-toggle="modal" data-bs-target="#delete-{{$value['id']}}">
+                                <a class="bi bi-trash fs-2" data-bs-toggle="modal" data-bs-target="#delete-{{$value['id']}}">
                                 <!-- Delete Product Modal -->
                                 <div class="modal fade" id="delete-{{$value['id']}}" tabindex="-1">
                                     <div class="modal-dialog modal-dialog-centered">
@@ -161,6 +170,14 @@
                                         </div>
                                     </div>
                                 </div><!-- Delete Product Modal-->
+                                <a class="icon fs-1" href="#" data-bs-toggle="dropdown"><i class="bi bi-info"></i></a>
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                    <li class="dropdown-header text-start">
+                                        <h6>Menu Relasi</h6>
+                                    </li>
+
+                                    <li><a class="dropdown-item" href="/partnersproduct/{{$value->id}}">Cek Supplier Produk</a></li>
+                                </ul>
                             </div>
                         </td>
                     </tr>
